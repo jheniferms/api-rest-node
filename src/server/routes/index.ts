@@ -8,6 +8,6 @@ router.get("/", (req, res) => {
     return res.status(StatusCodes.CREATED).send("Hello word");
 });
 
-router.post("/cities", CitiesController.createValidator, CitiesController.create);
+router.post("/cities", CitiesController.createValidation, CitiesController.create);
 
 export {router};

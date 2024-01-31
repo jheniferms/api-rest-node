@@ -1,33 +1,22 @@
-import { Request, RequestHandler, Response } from "express";
-import { StatusCodes } from "http-status-codes";
+/* eslint-disable @typescript-eslint/ban-types */
+import { Request, Response } from "express";
 import * as yup from "yup";
+import { validation } from "../../shared/middlewares";
 
 interface ICity {
     name: string
 }
 
-const bodyValidation: yup.Schema<ICity> = yup.object().shape({
-    name: yup.string().required().min(3).max(150),
-});
+interface IFilter {
+    filter?: string;
+    limit?: number;
+}
 
-
-export const createValidator: RequestHandler = async (req, res, next) => {
-    try {
-        await bodyValidation.validate(req.body, { abortEarly: false });
-        return next();
-    } catch (error) {
-        const err = error as yup.ValidationError;
-        const errors: Record<string, string> = {};
-
-        err.inner.forEach(err => {
-            if (!err.path) return;
-            errors[err.path] = err.message;
-        });
-
-        console.log("error: ", errors);
-        return res.status(StatusCodes.BAD_REQUEST).json({ errors });
-    }
-};
+export const createValidation = validation((getSchema) => ({
+    body: getSchema<ICity>(yup.object().shape({
+        name: yup.string().required().min(3).max(150),
+    }))
+}));
 
 export const create = async (req: Request<{}, {}, ICity>, res: Response) => {
     return res.json(req.body);
