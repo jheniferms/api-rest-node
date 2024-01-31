@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import * as yup from "yup";
 import { validation } from "../../shared/middlewares";
+import { StatusCodes } from "http-status-codes";
 
 interface ICity {
     name: string;
@@ -14,5 +15,7 @@ export const createValidation = validation((getSchema) => ({
 }));
 
 export const create = async (req: Request<{}, {}, ICity>, res: Response) => {
-    return res.json(req.body);
+    console.log("creating city");
+    console.log(req.body);
+    return res.status(StatusCodes.CREATED).json(1);
 };
