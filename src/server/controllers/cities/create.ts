@@ -4,12 +4,7 @@ import * as yup from "yup";
 import { validation } from "../../shared/middlewares";
 
 interface ICity {
-    name: string
-}
-
-interface IFilter {
-    filter?: string;
-    limit?: number;
+    name: string;
 }
 
 export const createValidation = validation((getSchema) => ({
